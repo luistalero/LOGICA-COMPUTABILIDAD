@@ -1,33 +1,51 @@
-# Guía de entrega
+# Guia de entrega y sustentacion
 
-## Ejecución
+## Ejecucion de consola
 
-1. Instalar Python 3.10 o superior.
-2. Instalar dependencias:
+1. Instalar dependencias:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Colocar la base suministrada en `data/inventario.xlsx`.
-4. Ejecutar:
+2. Ejecutar:
 
 ```bash
 python main.py
 ```
 
+Durante la ejecucion se debe ingresar la informacion de nomina. Luego el programa analiza el inventario y genera los graficos.
+
+## Ejecucion del frontend
+
+Para abrir la interfaz de presentacion:
+
+```bash
+streamlit run app.py
+```
+
+La aplicacion muestra cuatro pestañas: nomina, inventario, graficos y checklist de entrega.
+
 ## Evidencias esperadas
 
-La ejecución debe demostrar:
+- Captura y validacion de datos de nomina.
+- Generacion y lectura de `nomina.txt` mediante `with`.
+- Manejo de excepciones con `try-except`.
+- Conversion de datos del inventario a arreglos NumPy.
+- Calculos estadisticos y proyeccion porcentual.
+- Generacion de al menos dos tipos de graficos con Matplotlib.
+- Exportacion de imagenes mediante `savefig()`.
+- Informe con interpretacion gerencial.
 
-- Captura y validación de datos de nómina.
-- Generación y lectura de `nomina.txt` mediante `with`.
-- Manejo de excepciones mediante `try-except`.
-- Conversión de datos del inventario a arreglos NumPy.
-- Cálculos estadísticos y proyección porcentual.
-- Generación de al menos dos tipos de gráficos con Matplotlib.
-- Exportación de gráficos mediante `savefig()`.
+## Contenido del archivo comprimido
 
-## Presentación
+- `main.py`
+- `app.py`
+- `requirements.txt`
+- `README.md`
+- `nomina.txt`
+- `data/`
+- `graficos/`
+- `docs/`
 
-El informe `docs/informe.md` resume los resultados, la interpretación empresarial y la utilidad de los cálculos. Para la entrega final, el equipo debe anexar el código, el archivo de texto generado, las imágenes y la presentación/documento solicitado por la guía.
+Si se usa la base real del equipo, debe ubicarse en `data/inventario.xlsx` antes de comprimir.

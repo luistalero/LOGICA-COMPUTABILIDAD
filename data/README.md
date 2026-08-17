@@ -1,13 +1,13 @@
 # Datos de entrada
 
-El análisis utiliza la base de inventario suministrada para la actividad académica.
+El programa busca automaticamente:
 
-## Estructura esperada
+1. `data/inventario.xlsx`, si el equipo tiene la base real.
+2. `data/inventario_ejemplo.csv`, si no existe el archivo anterior.
 
-El archivo de entrada debe ubicarse como:
+La base debe contener al menos:
 
-`data/inventario.xlsx`
+- `Centro`: centro logistico, sede o area.
+- `Valor`: valor contable del activo en COP.
 
-El programa busca automáticamente la primera hoja del libro y requiere una columna de valor contable denominada `Valor` (o equivalente identificable en el código).
-
-> Nota: no se incorpora al repositorio una copia de datos que pueda estar restringida por la fuente académica. Para la entrega, conservar el archivo original junto al proyecto si el docente/equipo autoriza su distribución.
+El archivo `data/resultados.json` se genera al ejecutar `main.py` o `app.py`.

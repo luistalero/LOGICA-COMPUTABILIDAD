@@ -1,0 +1,15 @@
+Centro,Categoria,Activo,Valor,Cantidad,Estado
+1001,Equipos de computo,Portatil administrativo,3200000,18,Activo
+1001,Equipos de computo,Estacion de trabajo,5800000,7,Activo
+1001,Mobiliario,Escritorio ergonomico,950000,24,Activo
+1001,Mobiliario,Silla operativa,620000,38,Activo
+1001,Redes,Switch administrable,4100000,5,Activo
+1001,Seguridad,Camara IP,780000,16,Activo
+1002,Equipos de computo,Portatil comercial,2900000,14,Activo
+1002,Mobiliario,Archivador metalico,740000,10,Activo
+1002,Redes,Router empresarial,3600000,4,Activo
+1002,Seguridad,Control de acceso,2400000,3,Activo
+1003,Equipos logisticos,Lector codigo de barras,1250000,12,Activo
+1003,Equipos logisticos,Impresora de etiquetas,1850000,6,Activo
+1003,Mantenimiento,Kit herramienta tecnica,980000,8,Activo
+1003,Seguridad,DVR central,3100000,2,Activo

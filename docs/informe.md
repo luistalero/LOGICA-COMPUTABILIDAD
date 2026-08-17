@@ -1,42 +1,50 @@
-# Informe de apoyo — Proyecto Integrador Final
+# Informe de apoyo - Proyecto Integrador Final
 
 ## 1. Empresa y proceso analizado
 
-Para el módulo cuantitativo se utiliza la base de inventario suministrada para la actividad. La base contiene **28.140 registros** y 9 variables. El análisis se centra en la distribución de activos y su valor contable por centro.
+La empresa seleccionada para contextualizar el proyecto es **LogiStock S.A.S.**, una organizacion dedicada a la administracion y control de inventarios empresariales. El proceso operativo analizado es el **control de inventario por centro logistico**, porque permite identificar donde se concentra la mayor cantidad de activos y el mayor valor contable.
 
-## 2. Resultados principales
+## 2. Modulo I: gestion de nomina
 
-- Registros analizados: **28.140**.
-- Centros identificados: **2** (1001 y 1002).
-- Valor contable total: **$165.719.988.779 COP**.
-- Valor promedio por registro: **$5.889.125 COP**.
-- Mediana: **$417.141 COP**.
-- Mínimo: **$0 COP**.
-- Máximo: **$45.289.466.320 COP**.
-- Proyección del valor total con un incremento del 5%: **$174.005.988.218 COP**.
+El sistema genera un desprendible de pago para un empleado de la empresa. Se solicitan salario base, horas extras, deducciones y bonificaciones. Con estos datos se calcula el neto a pagar:
 
-> **Nota sobre la desviación estándar:** el valor debe tomarse de la ejecución final de `main.py`, ya que depende de los datos efectivamente cargados y de la configuración utilizada por NumPy. Se evita fijar aquí una cifra que pueda diferir de la ejecución reproducible.
+```text
+neto = salario base + horas extras + bonificaciones - deducciones
+```
 
-## 3. Lectura gerencial
+El archivo `nomina.txt` se escribe y se lee usando la sentencia `with`, lo que garantiza el cierre correcto del recurso. El programa valida que los valores monetarios sean numericos y no negativos, y controla excepciones de entrada/salida durante la manipulacion del archivo.
 
-El centro 1001 concentra **19.497 activos (69,3%)** y **$126.429.794.502 COP (76,3%)** del valor contable. El centro 1002 concentra **8.643 activos (30,7%)** y **$39.290.194.277 COP (23,7%)**.
+## 3. Modulo II: analisis cuantitativo con NumPy
 
-La diferencia entre la media y la mediana es muy grande debido a registros de valor excepcionalmente alto. Por esta razón se presentan ambas medidas y un histograma en escala logarítmica: utilizar únicamente el promedio podría producir una percepción equivocada del valor típico de un activo.
-
-## 4. Utilidad de los cálculos
+El inventario se modela con arreglos de NumPy a partir de la columna `Valor`. Las metricas calculadas son:
 
 - **Suma:** determina el valor contable total administrado.
-- **Promedio y mediana:** permiten comparar el valor típico y detectar el efecto de valores extremos.
-- **Mínimo y máximo:** identifican el rango de valores registrados.
-- **Desviación estándar:** cuantifica la dispersión de los valores respecto de la media.
-- **Incremento del 5%:** permite simular un escenario sencillo de crecimiento del valor del inventario para apoyar la planeación.
+- **Promedio:** estima el valor medio por activo.
+- **Mediana:** muestra el valor central y reduce el efecto de valores extremos.
+- **Minimo y maximo:** delimitan el rango de valores registrados.
+- **Desviacion estandar:** mide la dispersion de los valores frente al promedio.
+- **Proyeccion del 5%:** simula un escenario de incremento del valor total para apoyar la planeacion.
 
-## 5. Visualizaciones
+Estas metricas ayudan a priorizar controles, auditorias y decisiones de reposicion en los centros donde se concentra el mayor valor.
 
-1. `activos_por_centro.png`: compara la cantidad de activos por centro mediante un gráfico de barras.
-2. `valor_por_centro.png`: compara el valor contable acumulado por centro mediante un gráfico de barras.
-3. `distribucion_valores.png`: muestra la distribución de los valores positivos en escala `log10`, reduciendo el efecto visual de los valores extremos.
+## 4. Modulo III: visualizacion gerencial
 
-## 6. Conclusión
+El proyecto genera varias visualizaciones para fortalecer el apoyo visual:
 
-El análisis muestra que el inventario está concentrado principalmente en el centro 1001 tanto por cantidad de activos como por valor contable. La fuerte diferencia entre media y mediana evidencia que existen valores extremos, por lo que la toma de decisiones no debería basarse únicamente en el promedio. NumPy permite realizar los cálculos de forma reproducible y Matplotlib facilita convertirlos en información visual para apoyar la interpretación del inventario.
+1. `activos_por_centro.png`: grafico de barras para comparar cantidad de activos.
+2. `valor_por_centro.png`: grafico de lineas para comparar valor contable acumulado.
+3. `distribucion_valores.png`: histograma para observar la distribucion de valores.
+4. `participacion_valor_centro.png`: grafico circular tipo dona para observar la participacion porcentual del valor por centro.
+5. `valor_por_categoria.png`: grafico de barras horizontales para identificar las categorias con mayor peso contable.
+
+Cada grafico incluye titulo, etiquetas de ejes con unidades y leyenda. Las imagenes se exportan en alta resolucion mediante `savefig()`.
+
+## 5. Analisis critico
+
+La lectura conjunta de los graficos permite identificar los centros con mayor concentracion de activos y de valor contable. Si un centro tiene muchos activos pero un valor menor, la decision puede enfocarse en control operativo. Si un centro tiene menos activos pero mayor valor, la decision debe priorizar aseguramiento, mantenimiento y seguimiento financiero.
+
+La comparacion entre promedio y mediana es especialmente util: cuando existe una diferencia grande, significa que hay activos de valor muy alto que distorsionan el promedio. Por eso el informe recomienda revisar varias metricas y no basar la decision en un solo indicador.
+
+## 6. Conclusiones
+
+El proyecto cumple con la integracion solicitada: administra nomina con persistencia en archivo, analiza inventario con NumPy y transforma las metricas en graficos gerenciales. La interfaz `app.py` facilita la sustentacion porque permite filtrar datos, mostrar indicadores, presentar graficos dinamicos y navegar los modulos en una experiencia visual ordenada.

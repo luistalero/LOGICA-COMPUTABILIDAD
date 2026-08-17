@@ -1,0 +1,81 @@
+{
+  "fuente": "inventario_ejemplo.csv",
+  "registros": 14,
+  "centros": 3,
+  "total": 32270000.0,
+  "promedio": 2305000.0,
+  "mediana": 2125000.0,
+  "minimo": 620000.0,
+  "maximo": 5800000.0,
+  "desviacion": 1498474.2240025352,
+  "proyeccion_5": 33883500.0,
+  "resumen": [
+    {
+      "Centro": "1001",
+      "Cantidad": 6,
+      "Valor_Total": 15450000
+    },
+    {
+      "Centro": "1002",
+      "Cantidad": 4,
+      "Valor_Total": 9640000
+    },
+    {
+      "Centro": "1003",
+      "Cantidad": 4,
+      "Valor_Total": 7180000
+    }
+  ],
+  "por_categoria": [
+    {
+      "Categoria": "Equipos de computo",
+      "Cantidad": 3,
+      "Valor_Total": 11900000
+    },
+    {
+      "Categoria": "Redes",
+      "Cantidad": 2,
+      "Valor_Total": 7700000
+    },
+    {
+      "Categoria": "Seguridad",
+      "Cantidad": 3,
+      "Valor_Total": 6280000
+    },
+    {
+      "Categoria": "Equipos logisticos",
+      "Cantidad": 2,
+      "Valor_Total": 3100000
+    },
+    {
+      "Categoria": "Mobiliario",
+      "Cantidad": 3,
+      "Valor_Total": 2310000
+    },
+    {
+      "Categoria": "Mantenimiento",
+      "Cantidad": 1,
+      "Valor_Total": 980000
+    }
+  ],
+  "participacion": [
+    {
+      "Centro": "1001",
+      "Cantidad": 6,
+      "Valor_Total": 15450000,
+      "Participacion_Valor": 47.87728540440037
+    },
+    {
+      "Centro": "1002",
+      "Cantidad": 4,
+      "Valor_Total": 9640000,
+      "Participacion_Valor": 29.872947009606442
+    },
+    {
+      "Centro": "1003",
+      "Cantidad": 4,
+      "Valor_Total": 7180000,
+      "Participacion_Valor": 22.249767585993183
+    }
+  ]
+}
