@@ -1,0 +1,9 @@
+DESPRENDIBLE DE NÓMINA - EJEMPLO
+================================
+Empleado: Empleado de Prueba
+Salario base: $2,000,000.00 COP
+Horas extras: $125,000.00 COP
+Deducciones: $160,000.00 COP
+Bonificaciones: $100,000.00 COP
+--------------------------------
+Neto a pagar: $2,065,000.00 COP
