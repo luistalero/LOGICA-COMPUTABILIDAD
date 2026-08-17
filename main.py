@@ -1,12 +1,15 @@
 """Proyecto Integrador Final - Programación y Análisis de Datos en Python.
 
-Integra nómina con archivos/excepciones, análisis cuantitativo con NumPy
-y visualización con Matplotlib usando una base real de inventario.
+Integra:
+1. Gestión de nómina con archivos y excepciones.
+2. Análisis cuantitativo de inventario con NumPy.
+3. Visualización de resultados con Matplotlib.
 """
 from pathlib import Path
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 
 ROOT = Path(__file__).resolve().parent
 DATA = ROOT / "data" / "inventario.xlsx"
@@ -15,9 +18,11 @@ GRAFICOS = ROOT / "graficos"
 
 
 def pedir_float(mensaje, permitir_cero=True):
+    """Solicita un número no negativo y controla entradas inválidas."""
     while True:
         try:
-            valor = float(input(mensaje).replace(",", "").replace("$", "").strip())
+            entrada = input(mensaje).strip().replace("$", "").replace(",", "")
+            valor = float(entrada)
             if valor < 0 or (not permitir_cero and valor == 0):
                 raise ValueError("El valor debe ser mayor o igual a cero.")
             return valor
@@ -26,6 +31,7 @@ def pedir_float(mensaje, permitir_cero=True):
 
 
 def generar_nomina():
+    """Captura datos, calcula el neto y escribe/lee nomina.txt con with."""
     print("\n=== MÓDULO I: GESTIÓN DE NÓMINA ===")
     empleado = input("Nombre del empleado: ").strip() or "Empleado"
     salario = pedir_float("Salario base (COP): ")
@@ -50,22 +56,39 @@ def generar_nomina():
         with open(NOMINA, "w", encoding="utf-8") as archivo:
             archivo.write(contenido)
         print("\nArchivo nomina.txt generado correctamente.")
+
         with open(NOMINA, "r", encoding="utf-8") as archivo:
-            print("\n" + archivo.read())
-    except (IOError, FileNotFoundError) as exc:
+            contenido_leido = archivo.read()
+        print("\n" + contenido_leido)
+    except OSError as exc:
         print(f"Error de entrada/salida al manipular nomina.txt: {exc}")
 
 
 def analizar_inventario():
+    """Carga la base y realiza los cálculos estadísticos requeridos con NumPy."""
     print("=== MÓDULO II: ANÁLISIS CON NUMPY ===")
+
+    if not DATA.exists():
+        print(f"No se encontró la base de datos: {DATA}")
+        print("Coloca el archivo suministrado por el equipo en data/inventario.xlsx.")
+        return None
+
     try:
         df = pd.read_excel(DATA)
-    except FileNotFoundError:
-        print(f"No se encontró la base de datos: {DATA}")
-        return
-    df.columns = [str(c).strip() for c in df.columns]
+    except (OSError, ValueError, ImportError) as exc:
+        print(f"No fue posible leer la base de inventario: {exc}")
+        return None
 
-    valores = df["Valor"].to_numpy(dtype=float)
+    df.columns = [str(c).strip() for c in df.columns]
+    if "Valor" not in df.columns:
+        print("Error: la base debe contener una columna llamada 'Valor'.")
+        return None
+
+    valores = pd.to_numeric(df["Valor"], errors="coerce").fillna(0).to_numpy(dtype=float)
+    if valores.size == 0:
+        print("La base no contiene registros para analizar.")
+        return None
+
     total = np.sum(valores)
     promedio = np.mean(valores)
     mediana = np.median(valores)
@@ -83,18 +106,29 @@ def analizar_inventario():
     print(f"Desviación estándar: ${desviacion:,.0f} COP")
     print(f"Proyección con incremento del 5%: ${incremento_5:,.0f} COP")
 
-    por_centro = df.groupby("Centro")["Valor"].agg(["count", "sum"]).sort_index()
-    print("\nResumen por centro:")
-    print(por_centro.to_string())
+    if "Centro" in df.columns:
+        por_centro = df.assign(Valor=valores).groupby("Centro")["Valor"].agg(["count", "sum"]).sort_index()
+        print("\nResumen por centro:")
+        print(por_centro.to_string())
+
+    df = df.copy()
+    df["Valor"] = valores
     return df
 
 
 def generar_graficos(df):
+    """Genera dos tipos de gráficos y los exporta con savefig()."""
     print("\n=== MÓDULO III: VISUALIZACIÓN ===")
     GRAFICOS.mkdir(exist_ok=True)
+
+    if "Centro" not in df.columns:
+        print("No se puede graficar por centro: falta la columna 'Centro'.")
+        return
+
     conteo = df.groupby("Centro").size().sort_index()
     valor_centro = df.groupby("Centro")["Valor"].sum().sort_index()
 
+    # Gráfico 1: barras para comparar cantidades.
     ax = conteo.plot(kind="bar", figsize=(9, 5.5), title="Cantidad de activos registrados por centro")
     ax.set_xlabel("Centro")
     ax.set_ylabel("Cantidad de activos (unidades)")
@@ -103,6 +137,7 @@ def generar_graficos(df):
     plt.savefig(GRAFICOS / "activos_por_centro.png", dpi=180)
     plt.close()
 
+    # Gráfico 2: barras para comparar valor contable.
     ax = valor_centro.plot(kind="bar", figsize=(9, 5.5), title="Valor contable acumulado del inventario por centro")
     ax.set_xlabel("Centro")
     ax.set_ylabel("Valor contable (COP)")
@@ -111,15 +146,18 @@ def generar_graficos(df):
     plt.savefig(GRAFICOS / "valor_por_centro.png", dpi=180)
     plt.close()
 
+    # Gráfico 3: histograma para observar la distribución de valores positivos.
     valores_positivos = df.loc[df["Valor"] > 0, "Valor"].to_numpy(dtype=float)
-    plt.figure(figsize=(9, 5.5))
-    plt.hist(np.log10(valores_positivos), bins=35)
-    plt.title("Distribución de valores unitarios del inventario (escala log10)")
-    plt.xlabel("log10(valor en COP)")
-    plt.ylabel("Cantidad de registros (unidades)")
-    plt.tight_layout()
-    plt.savefig(GRAFICOS / "distribucion_valores.png", dpi=180)
-    plt.close()
+    if valores_positivos.size:
+        plt.figure(figsize=(9, 5.5))
+        plt.hist(np.log10(valores_positivos), bins=35)
+        plt.title("Distribución de valores del inventario (escala log10)")
+        plt.xlabel("log10(valor en COP)")
+        plt.ylabel("Cantidad de registros (unidades)")
+        plt.tight_layout()
+        plt.savefig(GRAFICOS / "distribucion_valores.png", dpi=180)
+        plt.close()
+
     print("Gráficos exportados en la carpeta graficos/.")
 
 
